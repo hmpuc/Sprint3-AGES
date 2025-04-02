@@ -1,0 +1,29 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma~"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model film {
+  id            Int      @id @default(autoincrement())
+  title         String
+  rating        Float    @default(0)
+  numberReviews Int      @default(0)
+  review        review[]
+}
+
+model review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  filmId    Int?
+  title     String
+  rating    Int
+  content   String?
+  author    String
+  film      film?    @relation(fields: [filmId], references: [id])
+}
